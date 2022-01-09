@@ -1,17 +1,21 @@
 const inquirer = require('inquirer');
-// const fs = require('fs');
-// const generatePage = require('./src/page-template.js');
+
+const { writeFile, copyFile } = require('./utils/generate-site.js');
+
+const generatePage = require('./src/page-template.js');
+
 // const profileDataArgs = process.argv.slice(2);
+
 // const [name, github] = profileDataArgs;
+
 // fs.writeFile('index.html', generatePage(name, github), err => {
 //     if (err) throw err;
   
 //     console.log('Portfolio complete! Check out index.html to see the output!');
 //   });
 
-const promptProject = () => {
+const promptUser = () => {
     return inquirer.prompt([
-
         {
             type: 'input',
             name: 'name',
@@ -28,7 +32,7 @@ const promptProject = () => {
         {
             type: 'input',
             name: 'github',
-            message: 'Enter your GitHub Username (Required)'
+            message: 'Enter your GitHub Username (Required)',
             validate: nameInput => {
                 if (nameInput) {
                 return true;
@@ -39,20 +43,29 @@ const promptProject = () => {
             }
         },
         {
+            type: 'confirm',
+            name: 'confirmAbout',
+            message: 'Would you like to enter some information about yourself for an "About" section?',
+            default: true
+        },
+        {
             type: 'input',
             name: 'about',
-            message: 'Provide some information about yourself:'
-        }
+            message: 'Provide some information about yourself:',
+            when: ({ confirmAbout }) => confirmAbout
+          }
     ]);
   };
 
-  const promptProject = portfolioData => {
+const promptProject = portfolioData => {
     // If there's no 'projects' array property, create one
     if (!portfolioData.projects) {
     portfolioData.projects = [];
     }
     console.log(`
-
+  =================
+  Add a New Project
+  =================
   `);
     return inquirer.prompt([
       {
@@ -63,7 +76,7 @@ const promptProject = () => {
       {
         type: 'input',
         name: 'description',
-        message: 'Provide a description of the project (Required)'
+        message: 'Provide a description of the project (Required)',
         validate: nameInput => {
             if (nameInput) {
             return true;
@@ -82,7 +95,7 @@ const promptProject = () => {
       {
         type: 'input',
         name: 'link',
-        message: 'Enter the GitHub link to your project. (Required)'
+        message: 'Enter the GitHub link to your project. (Required)',
         validate: nameInput => {
             if (nameInput) {
             return true;
@@ -114,8 +127,22 @@ const promptProject = () => {
         }
     })
   };
+
 promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    console.log(portfolioData);
+    return generatePage(portfolioData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
+  })
+  .catch(err => {
+    console.log(err);
   });

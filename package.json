@@ -19,5 +19,9 @@
   "homepage": "https://github.com/debleehall/portfolio-generator#readme",
   "dependencies": {
     "inquirer": "^8.2.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {}
 }

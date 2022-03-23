@@ -13,7 +13,7 @@ N/A
 #### OSU Bootcamp
 This application was used to teach Module 9 (Node.js). 
 
-***Module 5 skills learned:***
+***Module 9 skills learned:***
 * We understand the purpose of Node.js and some of its uses in web development.
 * We know how to create and execute a Node.js application.
 * We learned a bit about the process for new features to be introduced into JavaScript and who is in charge of it (Ecma).
